@@ -1,6 +1,6 @@
 class TimeFlag{
 	public boolean flag;
-	public int time;
+	private int time;
 	public int MaxTime;
 	
 	public TimeFlag(boolean f, int t, int m){
@@ -17,13 +17,26 @@ class TimeFlag{
 				flag = false;
 			}
 		}else{
-			time = 0;
+			resetTime();
 		}
 	}
-	
+
+	public void resetTime(){
+		time = 0;
+	}
+
+	public int getTime(){
+		return time;
+	}
+
 	public void setFlag(boolean torf){
 		flag = torf;
 		time = 0;
 	}
+
+	public double getRate(){
+		return (double)time / (double)MaxTime;
+	}
+
 }
 

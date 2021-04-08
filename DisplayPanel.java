@@ -29,13 +29,13 @@ class DisplayPanel extends JPanel implements Runnable{
         
         setLayout(null);
         
-		JLabel tSCORE = new JLabel(" SCORE");
-		tSCORE.setBackground(Color.darkGray);
-		tSCORE.setForeground(Color.ORANGE);
-		tSCORE.setOpaque(true);
+		JLabel textScore = new JLabel(" SCORE");
+		textScore.setBackground(Color.darkGray);
+		textScore.setForeground(Color.ORANGE);
+		textScore.setOpaque(true);
 		f = new Font("TimesRoman",Font.PLAIN,15);
-		tSCORE.setFont(f);
-		tSCORE.setBounds(360, 5, 130, 15);
+		textScore.setFont(f);
+		textScore.setBounds(360, 5, 130, 15);
 		
 		dispScore.setHorizontalAlignment(JLabel.RIGHT);
 		dispScore.setBackground(Color.darkGray);
@@ -45,13 +45,13 @@ class DisplayPanel extends JPanel implements Runnable{
 		dispScore.setFont(f);
 		dispScore.setBounds(360, 20, 130, 30);
 		
-		JLabel tHS = new JLabel(" HIGH SCORE");
-		tHS.setBackground(Color.darkGray);
-		tHS.setForeground(Color.ORANGE);
-		tHS.setOpaque(true);
+		JLabel textHighScore = new JLabel(" HIGH SCORE");
+		textHighScore.setBackground(Color.darkGray);
+		textHighScore.setForeground(Color.ORANGE);
+		textHighScore.setOpaque(true);
 		f = new Font("TimesRoman",Font.PLAIN,15);
-		tHS.setFont(f);
-		tHS.setBounds(380, 60, 110, 15);
+		textHighScore.setFont(f);
+		textHighScore.setBounds(380, 60, 110, 15);
 		
 		dispHighScore.setHorizontalAlignment(JLabel.RIGHT);
 		dispHighScore.setBackground(Color.darkGray);
@@ -61,14 +61,14 @@ class DisplayPanel extends JPanel implements Runnable{
 		dispHighScore.setFont(f);
 		dispHighScore.setBounds(380, 75, 110, 30);
 
-		JLabel tTime = new JLabel(" TIME");
-		tTime.setSize(50,50);
-		tTime.setBackground(Color.darkGray);
-		tTime.setForeground(Color.ORANGE);
-		tTime.setOpaque(true);
+		JLabel textTime = new JLabel(" TIME");
+		textTime.setSize(50,50);
+		textTime.setBackground(Color.darkGray);
+		textTime.setForeground(Color.ORANGE);
+		textTime.setOpaque(true);
 		f = new Font("TimesRoman",Font.PLAIN,15);
-		tTime.setFont(f);
-		tTime.setBounds(10, 5, 50, 15);
+		textTime.setFont(f);
+		textTime.setBounds(10, 5, 50, 15);
 		
 		dispTimer.setHorizontalAlignment(JLabel.RIGHT);
 		dispTimer.setBackground(Color.darkGray);
@@ -78,22 +78,22 @@ class DisplayPanel extends JPanel implements Runnable{
 		dispTimer.setFont(f);
 		dispTimer.setBounds(10, 20, 130, 30);
 		
-		JLabel OpeInst = new JLabel("<html>操作方法<br>ゲームの開始：<br>「Alt+G」→Enter<br>カーソルの移動：<br>　方向キー<br>パネル入れ替え：<br>　スペースキー<br>新しい列を出す：<br>　Bキー");
-		OpeInst.setSize(120,110);
-		OpeInst.setBackground(Color.darkGray);
-		OpeInst.setForeground(Color.ORANGE);
-		OpeInst.setOpaque(true);
+		JLabel textInstruction = new JLabel("<html>操作方法<br>ゲームの開始：<br>「Alt+G」→Enter<br>カーソルの移動：<br>　方向キー<br>パネル入れ替え：<br>　スペースキー<br>新しい列を出す：<br>　Bキー");
+		textInstruction.setSize(120,110);
+		textInstruction.setBackground(Color.darkGray);
+		textInstruction.setForeground(Color.ORANGE);
+		textInstruction.setOpaque(true);
 		f = new Font("TimesRoman",Font.PLAIN,15);
-		OpeInst.setFont(f);
-		OpeInst.setBounds(10, 110, 130, 190);
+		textInstruction.setFont(f);
+		textInstruction.setBounds(10, 110, 130, 190);
 
-		add(tSCORE);
+		add(textScore);
 		add(dispScore);
-		add(tHS);
+		add(textHighScore);
 		add(dispHighScore);
-		add(tTime);
+		add(textTime);
 		add(dispTimer);
-		add(OpeInst);
+		add(textInstruction);
 
 		pPanel = new PuzzlePanel();
 		pPanel.setBounds(149, 5, 202, 302);
@@ -130,7 +130,7 @@ class DisplayPanel extends JPanel implements Runnable{
 			if(game.flag){
 				game.tickTime();
 				pPanel.tick();
-				long Remaining = (long)(timeLimit - game.time);
+				long Remaining = (long)(timeLimit - game.getTime());
 		        long sec = TimeUnit.MILLISECONDS.toSeconds(Remaining);
 		        long ms  = (long)Remaining - TimeUnit.SECONDS.toMillis(sec);
 		        
@@ -142,7 +142,7 @@ class DisplayPanel extends JPanel implements Runnable{
 					dispTimer.setForeground(Color.RED);
 				}
 		        dispTimer.setText(String.format("%02d",sec)+":"+String.format("%02d",ms/10));
-		        if(pPanel.gameState != true){
+		        if(pPanel.gameSROW != true){
 					game.flag = false;
 				}
 			}else if (readHiScore){
