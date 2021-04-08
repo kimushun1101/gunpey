@@ -45,10 +45,9 @@ cFlagは10行5列、gFlagはそれより1つずつ多く11行6列用意します
 
 ## 参考
 
-[グンペイホームページ](http://www.bandaigames.channel.or.jp/list/gunpey/ )
-
-[ウィキペディア](http://ja.wikipedia.org/wiki/GUNPEY)
-：噛み砕いたルール説明など
-
-[gunpey maniax](http://www.asahi-net.or.jp/~VG5M-OBT/gunpey_maniax.html )
+- [グンペイホームページ](http://www.bandaigames.channel.or.jp/list/gunpey/ )
+：おそらくここが本家ページだと思います。
+- [ウィキペディア](http://ja.wikipedia.org/wiki/GUNPEY)
+：噛み砕いたルール説明なども記載してあります。
+- [gunpey maniax](http://www.asahi-net.or.jp/~VG5M-OBT/gunpey_maniax.html )
 ：得点計算に利用させていただきました。
