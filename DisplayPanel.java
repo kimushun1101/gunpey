@@ -19,9 +19,9 @@ class DisplayPanel extends JPanel implements Runnable{
 	
 	private boolean readHiScore = false;
 
-	private JLabel nSCORE = new JLabel("123456");
-	private JLabel nHS = new JLabel(RankingData.getHiScore()+"");
-	private JLabel nTime = new JLabel("00:00");
+	private JLabel dispScore = new JLabel("123456");
+	private JLabel dispHighScore = new JLabel(RankingData.getHiScore()+"");
+	private JLabel dispTimer = new JLabel("00:00");
 
 	public DisplayPanel() {
         // pack()するときに必要
@@ -37,13 +37,13 @@ class DisplayPanel extends JPanel implements Runnable{
 		tSCORE.setFont(f);
 		tSCORE.setBounds(360, 5, 130, 15);
 		
-		nSCORE.setHorizontalAlignment(JLabel.RIGHT);
-		nSCORE.setBackground(Color.darkGray);
-		nSCORE.setForeground(Color.WHITE);
-		nSCORE.setOpaque(true);
+		dispScore.setHorizontalAlignment(JLabel.RIGHT);
+		dispScore.setBackground(Color.darkGray);
+		dispScore.setForeground(Color.WHITE);
+		dispScore.setOpaque(true);
 		f = new Font("TimesRoman",Font.BOLD, 30);
-		nSCORE.setFont(f);
-		nSCORE.setBounds(360, 20, 130, 30);
+		dispScore.setFont(f);
+		dispScore.setBounds(360, 20, 130, 30);
 		
 		JLabel tHS = new JLabel(" HIGH SCORE");
 		tHS.setBackground(Color.darkGray);
@@ -53,13 +53,13 @@ class DisplayPanel extends JPanel implements Runnable{
 		tHS.setFont(f);
 		tHS.setBounds(380, 60, 110, 15);
 		
-		nHS.setHorizontalAlignment(JLabel.RIGHT);
-		nHS.setBackground(Color.darkGray);
-		nHS.setForeground(Color.WHITE);
-		nHS.setOpaque(true);
+		dispHighScore.setHorizontalAlignment(JLabel.RIGHT);
+		dispHighScore.setBackground(Color.darkGray);
+		dispHighScore.setForeground(Color.WHITE);
+		dispHighScore.setOpaque(true);
 		f = new Font("TimesRoman",Font.BOLD, 30);
-		nHS.setFont(f);
-		nHS.setBounds(380, 75, 110, 30);
+		dispHighScore.setFont(f);
+		dispHighScore.setBounds(380, 75, 110, 30);
 
 		JLabel tTime = new JLabel(" TIME");
 		tTime.setSize(50,50);
@@ -70,13 +70,13 @@ class DisplayPanel extends JPanel implements Runnable{
 		tTime.setFont(f);
 		tTime.setBounds(10, 5, 50, 15);
 		
-		nTime.setHorizontalAlignment(JLabel.RIGHT);
-		nTime.setBackground(Color.darkGray);
-		nTime.setForeground(Color.WHITE);
-		nTime.setOpaque(true);
+		dispTimer.setHorizontalAlignment(JLabel.RIGHT);
+		dispTimer.setBackground(Color.darkGray);
+		dispTimer.setForeground(Color.WHITE);
+		dispTimer.setOpaque(true);
 		f = new Font("TimesRoman",Font.BOLD, 30);
-		nTime.setFont(f);
-		nTime.setBounds(10, 20, 130, 30);
+		dispTimer.setFont(f);
+		dispTimer.setBounds(10, 20, 130, 30);
 		
 		JLabel OpeInst = new JLabel("<html>操作方法<br>ゲームの開始：<br>「Alt+G」→Enter<br>カーソルの移動：<br>　方向キー<br>パネル入れ替え：<br>　スペースキー<br>新しい列を出す：<br>　Bキー");
 		OpeInst.setSize(120,110);
@@ -88,11 +88,11 @@ class DisplayPanel extends JPanel implements Runnable{
 		OpeInst.setBounds(10, 110, 130, 190);
 
 		add(tSCORE);
-		add(nSCORE);
+		add(dispScore);
 		add(tHS);
-		add(nHS);
+		add(dispHighScore);
 		add(tTime);
-		add(nTime);
+		add(dispTimer);
 		add(OpeInst);
 
 		pPanel = new PuzzlePanel();
@@ -120,7 +120,7 @@ class DisplayPanel extends JPanel implements Runnable{
 	
 	public void run() {
 		while (true) {
-			// 10ミリ秒だけ休止
+			// 5ミリ秒だけ休止
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
@@ -135,22 +135,22 @@ class DisplayPanel extends JPanel implements Runnable{
 		        long ms  = (long)Remaining - TimeUnit.SECONDS.toMillis(sec);
 		        
 		        if(sec >= 30){
-					nTime.setForeground(Color.WHITE);
+					dispTimer.setForeground(Color.WHITE);
 				}else if(sec >= 10){
-					nTime.setForeground(Color.ORANGE);
+					dispTimer.setForeground(Color.ORANGE);
 				}else{
-					nTime.setForeground(Color.RED);
+					dispTimer.setForeground(Color.RED);
 				}
-		        nTime.setText(String.format("%02d",sec)+":"+String.format("%02d",ms/10));
+		        dispTimer.setText(String.format("%02d",sec)+":"+String.format("%02d",ms/10));
 		        if(pPanel.gameState != true){
 					game.flag = false;
 				}
 			}else if (readHiScore){
 				pPanel.end();
-				nHS.setText(RankingData.getHiScore()+"");
+				dispHighScore.setText(RankingData.getHiScore()+"");
 				readHiScore = false;
 			}
-			nSCORE.setText(pPanel.score+"");
+			dispScore.setText(pPanel.score+"");
 			
 			if(pPanel.f2){
 				pPanel.end();
