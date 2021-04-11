@@ -27,7 +27,7 @@ import java.util.*;
 
 
 class RankingData{
-	public static int getHiScore(){
+	public static int getHighScore(){
 		ArrayList<Integer> al = new ArrayList<Integer>();
         try{
             File file = new File("ranking" + File.separator + "score.txt");

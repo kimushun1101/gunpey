@@ -83,7 +83,7 @@ class Gunpey extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		
-		ImageIcon icon = new ImageIcon("img" + File.separator + "gunpey.gif");
+		ImageIcon icon = new ImageIcon("imgs" + File.separator + "icon.png");
 		setIconImage(icon.getImage());
 	}
 

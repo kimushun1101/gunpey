@@ -23,9 +23,9 @@ THE SOFTWARE.
 */
 
 class TimeFlag{
-	public boolean flag;
+	private boolean flag;
 	private int time;
-	public int MaxTime;
+	private int MaxTime;
 	
 	public TimeFlag(boolean f, int t, int m){
 		flag = f;	time = t;	MaxTime = m;
@@ -53,10 +53,17 @@ class TimeFlag{
 		return time;
 	}
 
-	public void setFlag(boolean torf){
-		flag = torf;
-		time = 0;
+	public void setFlag(boolean TorF){
+		flag = TorF;
+		if(flag){
+			time = 0;
+		}
 	}
+
+	public boolean getFlag(){
+		return flag;
+	}
+
 
 	public double getRate(){
 		return (double)time / (double)MaxTime;

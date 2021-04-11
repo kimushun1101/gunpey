@@ -46,7 +46,7 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	public int[][] bPanel = new int[COL][ROW];		// panelの種類
 	public int[][] kPanel = new int[COL][ROW];		// 消えるpanelのコピー
 	public int[][] fPanel = new int[COL][ROW];		// 浮いているpanelのコピー
-	public int[][] cFlag = new int[COL][ROW];		// mass flag
+	public int[][] cFlag = new int[COL][ROW];		// cell flag
 	public int[][] gFlag = new int[COL+1][ROW+1];	// grid flag
 	public int cF;		// connect flag
 	// パネルの種類
@@ -59,23 +59,23 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	public int scoreTemp = 0;
 	public Font f;
 	// タイムのクラス生成
-	private TimeFlag swap;
-	private TimeFlag kill;
-	private TimeFlag nline;
-	public  boolean gameSROW = false;
+	private TimeFlag tSwap;		// swap timer
+	private TimeFlag tVanish;	// vanish timer
+	private TimeFlag tPanelUp;		// panel up timer
+	public  boolean gameState = false;
 	// パネルの位置
     private int curX = 2, curY = 4;	    // カーソルの位置
     private int s1X = 0, s1Y = 0;	    // 移動パネルの位置
     private int s2X = 0, s2Y = 0;	    // 移動パネルの位置
     // 背景のイメージ
-	private String bgPlay = "imgs" + File.separator + "bg_silver.png";
-	private String bgOver = "imgs" + File.separator + "bg_gold.png";
+	private String PlayingImg = "imgs" + File.separator + "playing.jpg";
+	private String StanbyImg = "imgs" + File.separator + "standby.jpg";
 	// 効果音やBGM
-	private AudioClip acBGM    = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "bgm.mid"));
-	private AudioClip acSwap   = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "swap.wav"));
-	private AudioClip acConnect  = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "connect.wav"));
-	private AudioClip acVanish   = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "vanish.wav"));
-	private AudioClip acLineUp = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "lineup.wav"));
+	private AudioClip acBGM     = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "bgm.mid"));
+	private AudioClip acSwap    = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "swap.wav"));
+	private AudioClip acConnect = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "connect.wav"));
+	private AudioClip acVanish  = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "vanish.wav"));
+	private AudioClip acPanelUp = Applet.newAudioClip(getClass().getResource("sounds" + File.separator + "panelup.wav"));
 
 	// F2の判定
 	public boolean f2 = false;
@@ -86,9 +86,9 @@ class PuzzlePanel extends JPanel implements KeyListener {
         setFocusable(true);
 		addKeyListener(this);
 		
-		swap = new TimeFlag(false, 0, 80);
-		kill = new TimeFlag(false, 0, 6000);
-		nline = new TimeFlag(false, 0, 5000);
+		tSwap = new TimeFlag(false, 0, 80);
+		tVanish = new TimeFlag(false, 0, 6000);
+		tPanelUp = new TimeFlag(false, 0, 5000);
 	}
 	
 	public void start(){
@@ -100,17 +100,17 @@ class PuzzlePanel extends JPanel implements KeyListener {
         }
     	curX = 2; curY = 4;	    // カーソルの位置
 		score = 0;
-		nline.setFlag(true);
-		gameSROW = true;
+		tPanelUp.setFlag(true);
+		gameState = true;
 		acBGM.loop();
 	}
 	public void end(){
 	    score += scoreTemp;
 	    scoreTemp = 0;
 	    RankingData.setScore(score);
-	    swap.setFlag(false);
-	    kill.setFlag(false);
-		gameSROW = false;
+	    tSwap.setFlag(false);
+	    tVanish.setFlag(false);
+		gameState = false;
 		repaint();
 		acBGM.stop();
 	}
@@ -120,9 +120,9 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	    Graphics2D g2 = (Graphics2D)g;
 	    // フィールドを描く
 	    // 背景を描く
-		Image img = getToolkit().getImage(bgPlay);
-		if(gameSROW == false){
-			img = getToolkit().getImage(bgOver);
+		Image img = getToolkit().getImage(PlayingImg);
+		if(gameState == false){
+			img = getToolkit().getImage(StanbyImg);
 		}
 		g.drawImage(img,-100,-100,this);
 		// マス枠を描画する
@@ -156,7 +156,7 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	        }
 	    }
 		// 入れ替え中のパネルを描く
-        if(swap.flag){
+        if(tSwap.getFlag()){
 			s1X = curX*GSW+1; s1Y = curY*GSH; 	    // 移動パネルの位置
 			s2X = curX*GSW+1; s2Y = curY*GSH+GSH;	// 移動パネルの位置
 
@@ -165,14 +165,16 @@ class PuzzlePanel extends JPanel implements KeyListener {
 			g.fillRect(s2X+1, s2Y, GSW, GSH);
 
 	        g2.setColor(Color.GREEN);
-			drawPanel(g2, bPanel[curX][curY+1], s1X+1, s1Y+(int)(GSH*swap.getRate()));
-			drawPanel(g2, bPanel[curX][curY], s2X+1, s2Y-(int)(GSH*swap.getRate()));
+			drawPanel(g2, bPanel[curX][curY+1], s1X+1, s1Y+(int)(GSH*tSwap.getRate()));
+			drawPanel(g2, bPanel[curX][curY], s2X+1, s2Y-(int)(GSH*tSwap.getRate()));
 		}
 
         // カーソルを描く
-        g2.setColor(Color.RED);
-		g2.setStroke(wideStroke2);
-        g2.drawRect(curX*GSW+1, curY*GSH, GSW, 2*GSH);
+		if(gameState){
+			g2.setColor(Color.RED);
+			g2.setStroke(wideStroke2);
+			g2.drawRect(curX*GSW+1, curY*GSH, GSW, 2*GSH);
+		}
         
         // 得点を表示
         if(scoreTemp != 0){
@@ -265,8 +267,8 @@ class PuzzlePanel extends JPanel implements KeyListener {
 		    	if(cFlag[x][y] == 1){
 		    		kPanel[x][y] = bPanel[x][y];
 		    		bPanel[x][y] = 0;
-		    		if(kill.flag != true){
-			    		kill.flag = true;
+		    		if(!tVanish.getFlag()){
+			    		tVanish.setFlag(true);
 			    		acConnect.play();
 			    	}
 		    		scoreTemp++;
@@ -331,7 +333,7 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	}
     
 	public void keyPressed(KeyEvent e) {
-		if(swap.flag != true && gameSROW){
+		if(!tSwap.getFlag() && gameState){
 			switch(e.getKeyCode()){
 			case KeyEvent.VK_F2:	// F2キー
 				f2 = true;
@@ -345,7 +347,7 @@ class PuzzlePanel extends JPanel implements KeyListener {
 			case KeyEvent.VK_DOWN:	// 下キー
 				if(curY < ROW-2)curY++;break;
 			case KeyEvent.VK_SPACE:	// スペースキー(入れ替え)
-				swap.flag = true;
+				tSwap.setFlag(true);
 				acSwap.play();
 				int buf1, buf2;
 				
@@ -375,7 +377,7 @@ class PuzzlePanel extends JPanel implements KeyListener {
 				// フラグチェック
 			    checkFlags();
 				break;
-			case KeyEvent.VK_B:	// bキー(新しい列の追加)ちなみにvキーは86
+			case KeyEvent.VK_B:	// bキーを押下したとき新しいパネルの追加
 				panelUp();
 				break;
 			}
@@ -388,12 +390,12 @@ class PuzzlePanel extends JPanel implements KeyListener {
 	}
 	
 	public void panelUp(){
-		if(kill.flag != true){
-			acLineUp.play();
+		if(!tVanish.getFlag()){
+			acPanelUp.play();
 			// 一番上にパネルが存在していればゲーム終了
 	        for (int x = 0; x < COL; x++) {
 				if(bPanel[x][0] != 0){
-					gameSROW = false;
+					gameState = false;
 				}
 	        }
 	        for (int y = 0; y < ROW-1; y++) {// 一番下は除く
@@ -435,16 +437,16 @@ class PuzzlePanel extends JPanel implements KeyListener {
 			
 		    checkFlags();	// フラグチェック
 	    }
-		nline.setFlag(true);
+		tPanelUp.setFlag(true);
 	}
 	
 	// パズルパネルの時間を進める．
     public void tick() {
-		swap.tickTime();
-		kill.tickTime();
-		nline.tickTime();
+		tSwap.tickTime();
+		tVanish.tickTime();
+		tPanelUp.tickTime();
 		
-		if(kill.flag != true){
+		if(!tVanish.getFlag()){
 			for (int x = 0; x < COL; x++) {
 			    for (int y = 0; y < ROW; y++) {
 		    		kPanel[x][y] = 0;
@@ -458,11 +460,11 @@ class PuzzlePanel extends JPanel implements KeyListener {
 			    score += scoreTemp;
 			    scoreTemp = 0;
 		    }
-		    if(kill.getTime() > 5){
+		    if(tVanish.getTime() > 5){
 		    	acVanish.play();
 		    }
 		}
-		if(nline.flag != true){
+		if(!tPanelUp.getFlag()){
 			panelUp();
 		}
 		repaint();

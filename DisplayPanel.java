@@ -30,6 +30,9 @@ import java.io.File;
 class DisplayPanel extends JPanel implements Runnable{
 	private PuzzlePanel pPanel;
 
+	// 画像の読み込み
+	private Image BgImg = getToolkit().getImage("imgs" + File.separator + "background.jpg");
+
     // 盤面の大きさ＝メインパネルの大きさと同じ
     private static final int WIDTH = 500;
     private static final int HEIGHT = 310;
@@ -38,13 +41,13 @@ class DisplayPanel extends JPanel implements Runnable{
 	public Font f = new Font("TimesRoman",Font.PLAIN,15);
 
 	private Thread thread;	// タイマ用スレッド
-	private TimeFlag game;	// タイムのクラス生成
-	private int timeLimit = 1000 * 90;
+	private TimeFlag tGame;	// タイムのクラス生成
+	private int timeLimit = 1000 * 90;	// 制限時間を90秒に設定
 	
-	private boolean readHiScore = false;
+	private boolean readHighScore = false;
 
-	private JLabel dispScore = new JLabel("123456");
-	private JLabel dispHighScore = new JLabel(RankingData.getHiScore()+"");
+	private JLabel dispScore = new JLabel("123456");	// とりあえず適当な6桁を入れておく
+	private JLabel dispHighScore = new JLabel(RankingData.getHighScore()+"");
 	private JLabel dispTimer = new JLabel("00:00");
 
 	public DisplayPanel() {
@@ -123,7 +126,7 @@ class DisplayPanel extends JPanel implements Runnable{
 		pPanel.setBounds(149, 5, 202, 302);
 		add(pPanel, BorderLayout.SOUTH);
 		
-		game = new TimeFlag(false, 0, timeLimit);
+		tGame = new TimeFlag(false, 0, timeLimit);
 
 		// スレッドを起動
 		thread = new Thread(this);
@@ -131,15 +134,14 @@ class DisplayPanel extends JPanel implements Runnable{
 	}
 	
 	public void gameStart(){
-		game.setFlag(true);
-		readHiScore = true;
+		tGame.setFlag(true);
+		readHighScore = true;
 		pPanel.start();
 	}
 	
     public void paintComponent(Graphics g) {
 	    // 背景を描く
-		Image img = getToolkit().getImage("imgs" + File.separator + "bg_blue.png");
-		g.drawImage(img,-100,-100,this);
+		g.drawImage(BgImg,-100,-100,this);
 	}
 	
 	public void run() {
@@ -151,10 +153,10 @@ class DisplayPanel extends JPanel implements Runnable{
 				e.printStackTrace();
 			}
 			
-			if(game.flag){
-				game.tickTime();
+			if(tGame.getFlag()){
+				tGame.tickTime();
 				pPanel.tick();
-				long Remaining = (long)(timeLimit - game.getTime());
+				long Remaining = (long)(timeLimit - tGame.getTime());
 		        long sec = TimeUnit.MILLISECONDS.toSeconds(Remaining);
 		        long ms  = (long)Remaining - TimeUnit.SECONDS.toMillis(sec);
 		        
@@ -166,13 +168,13 @@ class DisplayPanel extends JPanel implements Runnable{
 					dispTimer.setForeground(Color.RED);
 				}
 		        dispTimer.setText(String.format("%02d",sec)+":"+String.format("%02d",ms/10));
-		        if(pPanel.gameSROW != true){
-					game.flag = false;
+		        if(pPanel.gameState != true){
+					tGame.setFlag(false);
 				}
-			}else if (readHiScore){
+			}else if (readHighScore){
 				pPanel.end();
-				dispHighScore.setText(RankingData.getHiScore()+"");
-				readHiScore = false;
+				dispHighScore.setText(RankingData.getHighScore()+"");
+				readHighScore = false;
 			}
 			dispScore.setText(pPanel.score+"");
 			
