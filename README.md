@@ -37,14 +37,14 @@ $ java Gunpey
 ```
 jar ファイルを作成したい場合には
 ```
-$ jar cfe Gunpey.jar Gunpey *.class ./sounds/*.wav
+$ jar cfe Gunpey.jar Gunpey *.class
 ```
 ### 音源の追加
 
 sounds ディレクトリを作成して以下のファイルを追加してください。
 ゲームBGM はマルチプラットフォームでテストできておりません。
 wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) を使わせていただきテストしました。
-.gitignore で設定してGithub 上にはアップデートを控えさせていただいております。二次配布可能な音源などありましたら教えていただけますと幸いです。
+.gitignore で設定してGithub 上にはアップロードを控えさせていただいております。二次配布可能な音源などありましたら教えていただけますと幸いです。
 
 - bgm.mid : ゲームBGM
 - swap.wav : パネル入れ替え時の音
@@ -55,26 +55,46 @@ wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) �
 
 ## プログラムの中身について
 
-### パネル集合の種類と表示の仕方 
+クラスや変数のイメージは下図の通りです。
 
-基本的なパネル normalPanel、消滅中のパネル vanishPanel、消滅中のパネルの上にあるパネル floatingPanel の３種類をパネルの集合として用意しました。
-normalPanel を緑色で表示、vanishPanel を黄色で表示、floatingPanel は緑色で位置をずらして表示します。
-
+![Class Structure](imgs/classStructure.png)
+<!-- ![Playing Image](imgs/playingImg.png) -->
 
 ### 時間の管理 
 
 タイマを管理するクラス(TimeFlag.java)を作って大量生産しました。
 設定時間が経過するとTimeFlag のprivate変数であるflagがtrueになります。
-- ゲーム自体の制限時間のタイマgame Timer (tGame) 
-- パネルがつながれてから消えるまでのタイマ vanish Timer (vTimer) 
-- パネルの入れ替え時間のタイマ swap Timer (sTimer) 
-- 新しい列が出るまでの時間のタイマ panel up Timer (panelupTimer) 
+- gameTimer : ゲーム自体の制限時間のタイマ
+- vanishTimer : パネルがつながれてから消えるまでのタイマ
+- swapTimer : パネルの入れ替え時間のタイマ
+- panelupTimer : 新しい列が出るまでの時間のタイマ
+
+### パネル集合の種類と表示の仕方 
+
+以下の３種類をパネルの配列として用意しました。
+
+- normalPanel : 通常のパネル
+- vanishPanel : 消滅中のパネル
+- floatingPanel : 消滅中のパネルの上にあるパネル
+
+normalPanel を緑色で表示、vanishPanel を黄色で表示、floatingPanel は緑色で位置をずらして表示します。
 
 
 ### 消える判定のためのフラグ 
 
-ラインがつながっているかどうかを判定するために、パネルの状態panelFlag とパネルの頂点の状態gridFlag を用意して再帰関数で処理しています。
+ラインがつながっているかどうかを判定するために、
+
+- panelFlag : パネルの状態
+- gridFlag : パネルの頂点の状態
+
+を用意して再帰関数で処理しています。
 左端から右へ伝搬させる処理と右端から左へ伝搬させる処理を両方行い、折り返して接続されているようなラインに対しても正確に判定します。
+
+### スコアの管理
+
+RankingData クラスを作成して、ranking/score.txt を読み書きしています。
+ゲームオーバーになると、そのゲームでのスコアを追加、降順にソートされて格納し直します。ハイスコアを取り出したい場合にはソート済みの先頭のスコアを取り出してくる仕組みです。
+
 
 ### 既知の課題
 
