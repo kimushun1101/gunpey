@@ -119,7 +119,7 @@ RankingData クラスを作成して、ranking/score.txt を読み書きして�
 - [gunpey maniax](http://www.asahi-net.or.jp/~VG5M-OBT/gunpey_maniax.html )
 ：得点計算に利用させていただきました。
 
-### ライセンス等
+## ライセンス等
 
 ソースコードはMIT License としました。
 画像は[Pixabay](https://pixabay.com/ja/service/license/) で検索したものを使用させていただいております。
