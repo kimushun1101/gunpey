@@ -55,7 +55,7 @@ class TimeFlag{
 
 	public void setFlag(boolean TorF){
 		flag = TorF;
-		if(flag){
+		if(TorF){
 			time = 0;
 		}
 	}

@@ -29,14 +29,10 @@ import java.io.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
 
-
 class Gunpey extends JFrame {
 	private GameMenu  gMenu;
 	private DisplayPanel dPanel;
 	
-	// thread of updating value
-	private Thread thread;
-
 	Gunpey() {
 		getContentPane().setLayout(new FlowLayout());
 		setTitle("Gunpey");

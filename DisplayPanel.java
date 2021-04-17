@@ -44,7 +44,7 @@ class DisplayPanel extends JPanel implements Runnable{
 	private TimeFlag tGame;	// タイムのクラス生成
 	private int timeLimit = 1000 * 90;	// 制限時間を90秒に設定
 	
-	private boolean readHighScore = false;
+	private boolean isOnce = false;
 
 	private JLabel dispScore = new JLabel("123456");	// とりあえず適当な6桁を入れておく
 	private JLabel dispHighScore = new JLabel(RankingData.getHighScore()+"");
@@ -105,7 +105,7 @@ class DisplayPanel extends JPanel implements Runnable{
 		dispTimer.setFont(f);
 		dispTimer.setBounds(10, 20, 130, 30);
 		
-		JLabel textInstruction = new JLabel("<html>操作方法<br>ゲームの開始：<br>「Alt+G」→Enter<br>カーソルの移動：<br>　方向キー<br>パネル入れ替え：<br>　スペースキー<br>新しい列を出す：<br>　Bキー");
+		JLabel textInstruction = new JLabel("<html>操作方法<br>ゲームの開始：<br>「Alt+G」→Enter<br>カーソルの移動：<br>　方向キー<br>パネル入れ替え：<br>　スペースキー<br>新しい行を出す：<br>　Bキー");
 		textInstruction.setSize(120,110);
 		textInstruction.setBackground(Color.darkGray);
 		textInstruction.setForeground(Color.ORANGE);
@@ -135,7 +135,7 @@ class DisplayPanel extends JPanel implements Runnable{
 	
 	public void gameStart(){
 		tGame.setFlag(true);
-		readHighScore = true;
+		isOnce = true;
 		pPanel.start();
 	}
 	
@@ -148,7 +148,7 @@ class DisplayPanel extends JPanel implements Runnable{
 		while (true) {
 			// 5ミリ秒だけ休止
 			try {
-				Thread.sleep(5);
+				thread.sleep(5);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -160,6 +160,7 @@ class DisplayPanel extends JPanel implements Runnable{
 		        long sec = TimeUnit.MILLISECONDS.toSeconds(Remaining);
 		        long ms  = (long)Remaining - TimeUnit.SECONDS.toMillis(sec);
 		        
+				// 残り時間に応じて色を変える
 		        if(sec >= 30){
 					dispTimer.setForeground(Color.WHITE);
 				}else if(sec >= 10){
@@ -168,20 +169,15 @@ class DisplayPanel extends JPanel implements Runnable{
 					dispTimer.setForeground(Color.RED);
 				}
 		        dispTimer.setText(String.format("%02d",sec)+":"+String.format("%02d",ms/10));
-		        if(pPanel.gameState != true){
+		        if(pPanel.isPlaying != true){
 					tGame.setFlag(false);
 				}
-			}else if (readHighScore){
+			}else if (isOnce){
 				pPanel.end();
-				dispHighScore.setText(RankingData.getHighScore()+"");
-				readHighScore = false;
+				dispHighScore.setText(RankingData.getHighScore()+""); // int2str
+				isOnce = false;
 			}
-			dispScore.setText(pPanel.score+"");
-			
-			if(pPanel.f2){
-				pPanel.end();
-				pPanel.f2 = false;
-			}
+			dispScore.setText(pPanel.score+""); // int2str
 		}
 	}
 }
