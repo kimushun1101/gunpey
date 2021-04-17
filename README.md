@@ -44,7 +44,7 @@ $ java Gunpey
 ```
 jar ファイルを作成したい場合には
 ```
-$ jar cfe Gunpey.jar Gunpey *.class
+$ jar cfe Gunpey.jar Gunpey *.class LICENSE
 ```
 ### 音源の追加
 
@@ -65,7 +65,6 @@ wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) �
 クラスや変数のイメージは下図の通りです。
 
 ![Class Structure](imgs/classStructure.png)
-<!-- ![Playing Image](imgs/playingImg.png) -->
 
 ### 時間の管理 
 
@@ -108,14 +107,13 @@ RankingData クラスを作成して、ranking/score.txt を読み書きして�
 プログラムが複雑になりそうでしたので以下を放置してます。
 
 - Help のURL リンクの対応。
-- 音出力がApplet で出力されている（現在は非推奨）。
+- 音出力にApplet を用いている（現在は非推奨）。
+
 
 ## 参考
 
 - [グンペイホームページ](http://www.bandaigames.channel.or.jp/list/gunpey/ )
 ：おそらくここが本家ページです。
-- [ウィキペディア](http://ja.wikipedia.org/wiki/GUNPEY)
-：噛み砕いたルール説明なども記載してあります。
 - [gunpey maniax](http://www.asahi-net.or.jp/~VG5M-OBT/gunpey_maniax.html )
 ：得点計算の参考にさせていただきました。
 
