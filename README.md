@@ -117,7 +117,7 @@ RankingData クラスを作成して、ranking/score.txt を読み書きして�
 - [ウィキペディア](http://ja.wikipedia.org/wiki/GUNPEY)
 ：噛み砕いたルール説明なども記載してあります。
 - [gunpey maniax](http://www.asahi-net.or.jp/~VG5M-OBT/gunpey_maniax.html )
-：得点計算に参考にさせていただきました。
+：得点計算の参考にさせていただきました。
 
 ## ライセンス等
 
