@@ -46,12 +46,10 @@ jar ファイルを作成したい場合には
 ```
 $ jar cfe Gunpey.jar Gunpey *.class LICENSE
 ```
+
 ### 音源の追加
 
 sounds ディレクトリを作成して以下のファイルを追加してください。
-ゲームBGM はマルチプラットフォームでテストできておりません。
-wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) を使わせていただきテストしました。
-.gitignore で設定してGithub 上にはアップロードを控えさせていただいております。二次配布可能な音源などありましたら教えていただけますと幸いです。
 
 - bgm.mid : ゲームBGM
 - swap.wav : パネル入れ替え時の音
@@ -59,6 +57,9 @@ wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) �
 - vanish.wav : ライン消去時の音
 - panelup.wav : パネルせり上がり時の音
 
+ゲームBGM はマルチプラットフォームでテストできておりません。
+wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) を使わせていただきテストしました。
+.gitignore で設定してGithub 上にはアップロードを控えさせていただいております。二次配布可能な音源などありましたら教えていただけますと幸いです。
 
 ## プログラムの中身について
 
@@ -85,7 +86,6 @@ wav に関しては[魔王魂様の効果音](https://maou.audio/category/se/) �
 
 normalPanel を緑色で表示、vanishPanel を黄色で表示、floatingPanel は緑色で位置をずらして表示します。
 
-
 ### 消える判定のためのフラグ 
 
 ラインがつながっているかどうかを判定するために、
@@ -101,14 +101,12 @@ normalPanel を緑色で表示、vanishPanel を黄色で表示、floatingPanel 
 RankingData クラスを作成して、ranking/score.txt を読み書きしています。
 ゲームオーバーになると、そのゲームでのスコアを追加、降順にソートされて格納し直します。ハイスコアを取り出したい場合にはソート済みの先頭のスコアを取り出してくる仕組みです。
 
-
 ### 既知の課題
 
 プログラムが複雑になりそうでしたので以下を放置してます。
 
 - Help のURL リンクの対応。
 - 音出力にApplet を用いている（現在は非推奨）。
-
 
 ## 参考
 
