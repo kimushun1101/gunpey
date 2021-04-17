@@ -7,7 +7,7 @@
 パネルが最上部より出るか時間切れになるかでゲームオーバーです。
 ゲームオーバーまでのスコアを競ってください。
 一度に消すパネルの量が多ければ多いほど点数が高くなります。
-詳細は[参考](https://github.com/kimushun1101/gunpey#参考) のセクションをご参照ください。
+詳細は[参考](https://github.com/kimushun1101/gunpey#参考)のセクションをご参照ください。
 
 ![Playing Image](imgs/playingImg.png)
 
